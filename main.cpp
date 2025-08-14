@@ -15,8 +15,13 @@
 
 // potential note in lect2; 31:30
 
+#include <string>
+#include <iostream>
+
+using namespace std;
 
 int main() {
+    string input;
     
 
     return;
