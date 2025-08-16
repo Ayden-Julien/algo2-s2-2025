@@ -21,7 +21,11 @@
 using namespace std;
 
 int main() {
+    // getting user input
     string input;
+    cin >> input;
+    cout << endl;
+
     
 
     return;
