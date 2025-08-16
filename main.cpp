@@ -27,9 +27,15 @@ string schoolAddition (string Inp1, string Inp2, string B) {
     int inp1_length = Inp1.length();
     int inp2_length = Inp2.length();
     int max_length = max(inp1_length, inp2_length);
+    int base = stoi(B);
 
+    int holder = 0;
     int inp1_digit = 0;
     int inp2_digit = 0;
+    int carry = 0;
+    int remainder;
+
+    string output;
 
     // actual addition
     for (int i = 0; i < max_length; i++) {
@@ -51,8 +57,19 @@ string schoolAddition (string Inp1, string Inp2, string B) {
             inp2_digit = 0;
         }
 
-        
+        // 
+        holder = inp1_digit + inp2_digit + carry;
+        carry = holder / base;
+        remainder = holder % base;
+
+        output = to_string(remainder) + output;
     }
+
+    return output;
+
+};
+
+string karatsubaMultiplication(string inp1, string inp2, string B) {
 
 };
 
@@ -63,12 +80,19 @@ int main() {
     string Base; // base
 
     cin >> Input1 >> Input2 >> Base;
+    cout << endl;
 
+    // calling calculation functions
     string additionOutput = schoolAddition(Input1, Input2, Base);
 
-    // processing user input into something usable
+    string multiplicationOutput = karatsubaMultiplication(Input1, Input2, Base);
 
-    // not sure if ^ is required
+    // combining and then outputing
+    string output = additionOutput + " "
+                  + multiplicationOutput + " "
+                  + "0";
+    
+    cout << output << endl;
 
     return;
 };
