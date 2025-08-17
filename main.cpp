@@ -81,6 +81,11 @@ string karatsubaMultiplication(string inp1, string inp2, string B) {
     // 672; 936; 1904; 2652
     // 672*B^(2*k) + 936*B^(k) + 1904*B^(k) + 2652
     // = 7006652
+
+    // karatsuba algo
+    // (a1 * b1)*B^(2*k) +
+    // ((a1 + a0) * (b1 + b0) - (a1 * b1 + a0 * b0)) * B^(k) +
+    // (a0 + b0)
     string output;
 
     output = "0";
