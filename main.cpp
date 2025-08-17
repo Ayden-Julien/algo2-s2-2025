@@ -57,7 +57,6 @@ string schoolAddition (string Inp1, string Inp2, string B) {
             inp2_digit = 0;
         }
 
-        // 
         holder = inp1_digit + inp2_digit + carry;
         carry = holder / base;
         remainder = holder % base;
@@ -75,7 +74,13 @@ string schoolAddition (string Inp1, string Inp2, string B) {
 };
 
 string karatsubaMultiplication(string inp1, string inp2, string B) {
-
+    // eg:
+    // 1234 * 5678; B = 10; k = 2 
+    // a1 = 12; b1 = 56; b0 = 78; a0 = 34
+    // a1 * b1; a1 * b0; b1 * a0; b0 * a0
+    // 672; 936; 1904; 2652
+    // 672*B^(2*k) + 936*B^(k) + 1904*B^(k) + 2652
+    // = 7006652
     string output;
 
     output = "0";
@@ -85,9 +90,9 @@ string karatsubaMultiplication(string inp1, string inp2, string B) {
 
 int main() {
     // getting user input
-    string Input1; // input1
-    string Input2; // input2
-    string Base; // base
+    string Input1;
+    string Input2;
+    string Base;
 
     cin >> Input1 >> Input2 >> Base;
 
