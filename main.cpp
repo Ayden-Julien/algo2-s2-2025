@@ -40,18 +40,18 @@ string schoolAddition (string Inp1, string Inp2, string B) {
     // actual addition
     for (int i = 0; i < max_length; i++) {
         // fetching the i-th digit of both inp1 and inp2
-        
-        // finding the i-th digit in input1, with error catcher
+
+        // the - '0' in the fist case of both if statements is to 
+        // properly index the char to the number  
         if (i < inp1_length) {
-            inp1_digit = Inp1[inp1_length - i - 1];
+            inp1_digit = Inp1[inp1_length - i - 1] - '0';
         } 
         else {
             inp1_digit = 0;
         }
 
-        // finding the i-th digit in input2, with error catcher
         if (i < inp2_length) {
-            inp2_digit = Inp2[inp1_length - i - 1];
+            inp2_digit = Inp2[inp2_length - i - 1] - '0';
         }
         else {
             inp2_digit = 0;
@@ -65,12 +65,22 @@ string schoolAddition (string Inp1, string Inp2, string B) {
         output = to_string(remainder) + output;
     }
 
+    // for if output has more digits than either inputs (overflow condition)
+    if (carry > 0) {
+        output = to_string(carry) + output;
+    }
+
     return output;
 
 };
 
 string karatsubaMultiplication(string inp1, string inp2, string B) {
 
+    string output;
+
+    output = "0";
+
+    return output;
 };
 
 int main() {
@@ -80,7 +90,6 @@ int main() {
     string Base; // base
 
     cin >> Input1 >> Input2 >> Base;
-    cout << endl;
 
     // calling calculation functions
     string additionOutput = schoolAddition(Input1, Input2, Base);
@@ -94,5 +103,5 @@ int main() {
     
     cout << output << endl;
 
-    return;
+    return 0;
 };
