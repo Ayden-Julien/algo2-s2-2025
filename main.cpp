@@ -73,6 +73,13 @@ string schoolAddition (string Inp1, string Inp2, string B) {
 
 };
 
+
+// function required for karatsubaMultiplication
+// preforms a subtraction between 2 strings of base: Base
+string subtraction(string Inp1, string Inp2, string Base) {
+
+};
+
 // function for preforming karatsuba algo multiplication
 // (a, b, base)
 string karatsubaMultiplication(string a, string b, string B) {
@@ -84,11 +91,11 @@ string karatsubaMultiplication(string a, string b, string B) {
     int a_length = a.length();
     int b_length = b.length();
 
-    string output;
+    string output = "0";
 
     // base case
     // to enable first funcitonal case of k = 1
-    if (a_length || b_length <= 1) {
+    if (a_length == 1 || b_length == 1) {
         for (int i = 0; i < stoi(b); i++) {
             output = schoolAddition(output, a, B);
         }
@@ -101,41 +108,49 @@ string karatsubaMultiplication(string a, string b, string B) {
     int max_length = max(a_length, b_length);
     int k = max_length / 2;
 
+    // ensuring same length of a and b
+    if (a_length < max_length) {
+
+        a_length = a.length();
+    }
+    if (b_length < max_length) {
+
+        b_length = b.length();
+    }
+
     // splitting a and b
-    string a0 = a.substr();
-    string a1 = a.substr();
-    string b0 = b.substr();
-    string b1 = b.substr();
+    string a0 = a.substr(max_length - k);
+    string a1 = a.substr(0, max_length - k);
+    string b0 = b.substr(max_length - k);
+    string b1 = b.substr(0, max_length - k);
 
     // recursive case
-    // a0 * b0
-    string a0xb0 = karatsubaMultiplication(a0, b0, B);
     // a1 * b1
-    string a1xb1 = karatsubaMultiplication(a1, b1, B);
+    string section2 = karatsubaMultiplication(a1, b1, B);
     // (a1 + a0) * (b1 + b0)
-    string a1_a0xb1_b0 = karatsubaMultiplication((a1 + a0), (b1 + b0), B);
+    string section1 = karatsubaMultiplication((a1 + a0), (b1 + b0), B);
+    // a0 * b0
+    string section0 = karatsubaMultiplication(a0, b0, B);
 
     
     // post recursion processing 
 
-    // additions and subtractions
-    // for consistancy
-    string section0 = a0xb0;
-    // a1_a0xb1_b0 - a1xb1_a0xb0
-    string section1 = ;
-    // a1xb1 + a0xb0
-    string section2 = schoolAddition(a1xb1, a0xb0, B);
+    // middle section arithmetic
+    section1 = subtraction(section1, schoolAddition(section2, section0, B), B);
     
     // preforming the multiples by base; equivalent to adding
     // zeros to the end
+    string zeros_section2(2 * k, '0');
+    section2 = section2 + zeros_section2;
+    
+    string zeros_section1(k, '0');
+    section1 = section1 + zeros_section1;
+    
     // section0 unchanged
-    section1 = ;
-    section2 = ;
 
-    // summing all together
-    output = schoolAddition(section0, section1, B);
-    output = schoolAddition(output, section2, B);
-
+    output = schoolAddition(section2, section1, B);
+    output = schoolAddition(section0, output, B);
+    
     return output;
 };
 
