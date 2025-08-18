@@ -249,8 +249,6 @@ int main() {
                   + multiplicationOutput + " "
                   + "0";
 
-    
-    
     cout << output << endl;
 
     return 0;
