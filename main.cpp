@@ -73,22 +73,68 @@ string schoolAddition (string Inp1, string Inp2, string B) {
 
 };
 
-string karatsubaMultiplication(string inp1, string inp2, string B) {
-    // eg:
-    // 1234 * 5678; B = 10; k = 2 
-    // a1 = 12; b1 = 56; b0 = 78; a0 = 34
-    // a1 * b1; a1 * b0; b1 * a0; b0 * a0
-    // 672; 936; 1904; 2652
-    // 672*B^(2*k) + 936*B^(k) + 1904*B^(k) + 2652
-    // = 7006652
-
+// function for preforming karatsuba algo multiplication
+// (a, b, base)
+string karatsubaMultiplication(string a, string b, string B) {
     // karatsuba algo
     // (a1 * b1)*B^(2*k) +
     // ((a1 + a0) * (b1 + b0) - (a1 * b1 + a0 * b0)) * B^(k) +
-    // (a0 + b0)
+    // (a0 * b0)
+    
+    int a_length = a.length();
+    int b_length = b.length();
+
     string output;
 
-    output = "0";
+    // base case
+    // to enable first funcitonal case of k = 1
+    if (a_length || b_length <= 1) {
+        for (int i = 0; i < stoi(b); i++) {
+            output = schoolAddition(output, a, B);
+        }
+
+        return output;
+    }
+
+    
+    // establishment of recursive case vars
+    int max_length = max(a_length, b_length);
+    int k = max_length / 2;
+
+    // splitting a and b
+    string a0 = a.substr();
+    string a1 = a.substr();
+    string b0 = b.substr();
+    string b1 = b.substr();
+
+    // recursive case
+    // a0 * b0
+    string a0xb0 = karatsubaMultiplication(a0, b0, B);
+    // a1 * b1
+    string a1xb1 = karatsubaMultiplication(a1, b1, B);
+    // (a1 + a0) * (b1 + b0)
+    string a1_a0xb1_b0 = karatsubaMultiplication((a1 + a0), (b1 + b0), B);
+
+    
+    // post recursion processing 
+
+    // additions and subtractions
+    // for consistancy
+    string section0 = a0xb0;
+    // a1_a0xb1_b0 - a1xb1_a0xb0
+    string section1 = ;
+    // a1xb1 + a0xb0
+    string section2 = schoolAddition(a1xb1, a0xb0, B);
+    
+    // preforming the multiples by base; equivalent to adding
+    // zeros to the end
+    // section0 unchanged
+    section1 = ;
+    section2 = ;
+
+    // summing all together
+    output = schoolAddition(section0, section1, B);
+    output = schoolAddition(output, section2, B);
 
     return output;
 };
