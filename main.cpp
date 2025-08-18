@@ -93,6 +93,10 @@ string subtraction(string Inp1, string Inp2, string B) {
 
     string output;
 
+    // same initial structure as addition
+    // locating and aquireing individual digits of the input
+    // going from least significant to most significant
+    // if DNE then = 0
     for (int i = 0; i < max_length; i ++) {
         if (i < inp1_length) {
             inp1_digit = Inp1[inp1_length - i - 1] - '0';
@@ -108,6 +112,7 @@ string subtraction(string Inp1, string Inp2, string B) {
             inp2_digit = 0;
         }
 
+        // subtraction 
         holder = inp1_digit - inp2_digit + carry;
         
         if (holder < 0) {
