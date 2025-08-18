@@ -140,28 +140,15 @@ string karatsubaMultiplication(string a, string b, string B) {
     
     int a_length = a.length();
     int b_length = b.length();
-
-    string output = "0";
-
-    // base case
-    // to enable first funcitonal case of k = 1
-    if (a_length == 1 || b_length == 1) {
-        // stoi(b) working because of this being the base case
-        // and it only being 1 digit long
-        for (int i = 0; i < stoi(b); i++) {
-            output = schoolAddition(output, a, B);
-        }
-        
-        return output;
-    }
-
-
-    // establishment of recursive case vars
     int max_length = max(a_length, b_length);
     int k = max_length / 2;
 
+    string output = "0";
+
     // ensuring same length of a and b so it doesnt bork itself
     // at the splitting stage
+    // and so it it wont bork itself in the case of a_length = 1
+    // and b_length > 1, leading to excessive adding 
     if (a_length < max_length) {
         string preppended_zeros(max_length - a_length, '0');
         a = preppended_zeros + a;
@@ -171,6 +158,17 @@ string karatsubaMultiplication(string a, string b, string B) {
         string preppended_zeros(max_length - b_length, '0');
         b = preppended_zeros + b;
         b_length = b.length();
+    }
+
+    // base case
+    // to enable first funcitonal case of k = 1
+    if (a_length == 1 || b_length == 1) {
+        // stoi(b) working because of it only being 1 digit long
+        for (int i = 0; i < stoi(b); i++) {
+            output = schoolAddition(output, a, B);
+        }
+        
+        return output;
     }
 
 
@@ -184,21 +182,18 @@ string karatsubaMultiplication(string a, string b, string B) {
     // recursive case
     // a1 * b1
     string section2 = karatsubaMultiplication(a1, b1, B);
+    
     // (a1 + a0) * (b1 + b0)
     string section1 = karatsubaMultiplication(
                     schoolAddition(a1, a0, B),
                     schoolAddition(b1, b0, B), 
                     B);
+    
     // a0 * b0
     string section0 = karatsubaMultiplication(a0, b0, B);
-
+    
     
     // post recursion processing 
-
-    cout << "section0: " << section0 << endl;
-    cout << "section1: " << section1 << endl;
-    cout << "section2: " << section2 << endl;
-    cout << "----------" << endl;
 
     // middle section arithmetic
     section1 = subtraction(section1, schoolAddition(section2, section0, B), B);
@@ -235,19 +230,19 @@ int main() {
     // chopping of redundant 0s at front of string,
     // only the multiplication output can have extra 0s at the
     // front
-    int chopped_offset = 0;
+    int to_chop = 0;
     // the "output.legth() - 1" to make sure that if its only 0s
     // then just a single 0 will remain
     int chopper_max = multiplicationOutput.length() - 1;
     for (int i = 0; i < chopper_max; i++) {
-        if (multiplicationOutput[i - chopped_offset] == '0') {
-            multiplicationOutput = multiplicationOutput.substr(1);
-            chopped_offset++;
+        if (multiplicationOutput[i] == '0') {
+            to_chop++;
         }
         else {
             break;
         }
     }
+    multiplicationOutput = multiplicationOutput.substr(to_chop);
 
     // combining and then outputing
     string output = additionOutput + " "
