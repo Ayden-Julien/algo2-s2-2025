@@ -146,14 +146,16 @@ string karatsubaMultiplication(string a, string b, string B) {
     // base case
     // to enable first funcitonal case of k = 1
     if (a_length == 1 || b_length == 1) {
+        // stoi(b) working because of this being the base case
+        // and it only being 1 digit long
         for (int i = 0; i < stoi(b); i++) {
             output = schoolAddition(output, a, B);
         }
-
+        
         return output;
     }
 
-    
+
     // establishment of recursive case vars
     int max_length = max(a_length, b_length);
     int k = max_length / 2;
@@ -171,17 +173,22 @@ string karatsubaMultiplication(string a, string b, string B) {
         b_length = b.length();
     }
 
+
     // splitting a and b
     string a0 = a.substr(max_length - k);
     string a1 = a.substr(0, max_length - k);
     string b0 = b.substr(max_length - k);
     string b1 = b.substr(0, max_length - k);
 
+
     // recursive case
     // a1 * b1
     string section2 = karatsubaMultiplication(a1, b1, B);
     // (a1 + a0) * (b1 + b0)
-    string section1 = karatsubaMultiplication((a1 + a0), (b1 + b0), B);
+    string section1 = karatsubaMultiplication(
+                    schoolAddition(a1, a0, B),
+                    schoolAddition(b1, b0, B), 
+                    B);
     // a0 * b0
     string section0 = karatsubaMultiplication(a0, b0, B);
 
@@ -190,7 +197,7 @@ string karatsubaMultiplication(string a, string b, string B) {
 
     // middle section arithmetic
     section1 = subtraction(section1, schoolAddition(section2, section0, B), B);
-    
+
     // preforming the multiples by base; equivalent to adding
     // zeros to the end
     string zeros_section2(2 * k, '0');
@@ -218,8 +225,7 @@ int main() {
     // calling calculation functions
     string additionOutput = schoolAddition(Input1, Input2, Base);
 
-    //string multiplicationOutput = karatsubaMultiplication(Input1, Input2, Base);
-    string multiplicationOutput = subtraction(Input1, Input2, Base);
+    string multiplicationOutput = karatsubaMultiplication(Input1, Input2, Base);
 
     // combining and then outputing
     string output = additionOutput + " "
