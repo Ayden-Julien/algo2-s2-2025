@@ -124,7 +124,7 @@ string subtraction(string Inp1, string Inp2, string B) {
         }
 
         output = to_string(holder) + output;
-    }
+    } 
     
     return output;
 };
@@ -195,6 +195,11 @@ string karatsubaMultiplication(string a, string b, string B) {
     
     // post recursion processing 
 
+    cout << "section0: " << section0 << endl;
+    cout << "section1: " << section1 << endl;
+    cout << "section2: " << section2 << endl;
+    cout << "----------" << endl;
+
     // middle section arithmetic
     section1 = subtraction(section1, schoolAddition(section2, section0, B), B);
 
@@ -227,10 +232,29 @@ int main() {
 
     string multiplicationOutput = karatsubaMultiplication(Input1, Input2, Base);
 
+    // chopping of redundant 0s at front of string,
+    // only the multiplication output can have extra 0s at the
+    // front
+    int chopped_offset = 0;
+    // the "output.legth() - 1" to make sure that if its only 0s
+    // then just a single 0 will remain
+    int chopper_max = multiplicationOutput.length() - 1;
+    for (int i = 0; i < chopper_max; i++) {
+        if (multiplicationOutput[i - chopped_offset] == '0') {
+            multiplicationOutput = multiplicationOutput.substr(1);
+            chopped_offset++;
+        }
+        else {
+            break;
+        }
+    }
+
     // combining and then outputing
     string output = additionOutput + " "
                   + multiplicationOutput + " "
                   + "0";
+
+    
     
     cout << output << endl;
 
