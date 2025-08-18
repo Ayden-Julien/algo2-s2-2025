@@ -15,6 +15,9 @@
 
 // potential note in lect2; 31:30
 
+// compile command:
+// g++ -std=c++11 -o main.out -O2 -Wall main.cpp
+
 #include <string>
 #include <iostream>
 #include <algorithm>
@@ -75,10 +78,52 @@ string schoolAddition (string Inp1, string Inp2, string B) {
 
 
 // function required for karatsubaMultiplication
-// preforms a subtraction between 2 strings of base: Base
-string subtraction(string Inp1, string Inp2, string Base) {
+// Inp1 - Inp2; of base: Base
+// presuming Inp1 > Inp2 because thats seems like a pain otherwise
+string subtraction(string Inp1, string Inp2, string B) {
+    int inp1_length = Inp1.length();
+    int inp2_length = Inp2.length();
+    int max_length = max(inp1_length, inp2_length);
+    int base = stoi(B);
 
+    int inp1_digit = 0;
+    int inp2_digit = 0;
+    int carry = 0;
+    int holder = 0;
+
+    string output;
+
+    for (int i = 0; i < max_length; i ++) {
+        if (i < inp1_length) {
+            inp1_digit = Inp1[inp1_length - i - 1] - '0';
+        }
+        else {
+            inp1_digit = 0;
+        }
+
+        if (i < inp2_length) {
+            inp2_digit = Inp2[inp2_length - i - 1] - '0';
+        }
+        else {
+            inp2_digit = 0;
+        }
+
+        holder = inp1_digit - inp2_digit + carry;
+        
+        if (holder < 0) {
+            carry = -1;
+            holder = holder + base;
+        }
+        else {
+            carry = 0;
+        }
+
+        output = to_string(holder) + output;
+    }
+    
+    return output;
 };
+
 
 // function for preforming karatsuba algo multiplication
 // (a, b, base)
@@ -108,13 +153,16 @@ string karatsubaMultiplication(string a, string b, string B) {
     int max_length = max(a_length, b_length);
     int k = max_length / 2;
 
-    // ensuring same length of a and b
+    // ensuring same length of a and b so it doesnt bork itself
+    // at the splitting stage
     if (a_length < max_length) {
-
+        string preppended_zeros(max_length - a_length, '0');
+        a = preppended_zeros + a;
         a_length = a.length();
     }
     if (b_length < max_length) {
-
+        string preppended_zeros(max_length - b_length, '0');
+        b = preppended_zeros + b;
         b_length = b.length();
     }
 
@@ -148,11 +196,11 @@ string karatsubaMultiplication(string a, string b, string B) {
     
     // section0 unchanged
 
-    output = schoolAddition(section2, section1, B);
-    output = schoolAddition(section0, output, B);
+    output = schoolAddition(schoolAddition(section2, section1, B), section0, B);
     
     return output;
 };
+
 
 int main() {
     // getting user input
@@ -165,7 +213,8 @@ int main() {
     // calling calculation functions
     string additionOutput = schoolAddition(Input1, Input2, Base);
 
-    string multiplicationOutput = karatsubaMultiplication(Input1, Input2, Base);
+    //string multiplicationOutput = karatsubaMultiplication(Input1, Input2, Base);
+    string multiplicationOutput = subtraction(Input1, Input2, Base);
 
     // combining and then outputing
     string output = additionOutput + " "
