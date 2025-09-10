@@ -72,7 +72,7 @@ class AVL {
             private_inorder(root->right_branch);
         }
     };
-    
+
     public:
 
     // the public access of the traversal methods
@@ -105,7 +105,7 @@ class AVL {
 };
 
 int main() {
-
+    AVL tree;
 
     return 0;
 }
