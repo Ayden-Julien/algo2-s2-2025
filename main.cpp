@@ -31,9 +31,6 @@ class Node {
     // for ease of tree balancing
     int height;
 
-    // in place of a bunch of access functions
-    friend class ALV;
-
     public:
     Node(int elem) {
         element = elem;
@@ -41,11 +38,70 @@ class Node {
         left_branch = nullptr;
         height = 1;
     };
+
+    // in place of a bunch of access functions
+    friend class AVL;
 };
 
 // AVL binary tree
 class AVL {
+    private:
+    Node* root;
 
+    // varying traversal methods
+    void private_preorder(Node* root) {
+        if (root != nullptr) {
+            std::cout << root->element << " ";
+            private_preorder(root->left_branch);
+            private_preorder(root->right_branch);
+        }
+    };
+
+    void private_postorder(Node* root) {
+        if (root != nullptr) {
+            private_postorder(root->left_branch);
+            private_postorder(root->right_branch);
+            std::cout << root->element << " ";
+        }
+    };
+
+    void private_inorder(Node* root) {
+        if (root != nullptr) {
+            private_inorder(root->left_branch);
+            std::cout << root->element << " ";
+            private_inorder(root->right_branch);
+        }
+    };
+    
+    public:
+
+    // the public access of the traversal methods
+    void preorder() {
+        if (root == nullptr) {
+            std::cout << "EMPTY";
+        }
+        else {
+            private_preorder(root);
+        }
+    }
+
+    void postorder() {
+        if (root == nullptr) {
+            std::cout << "EMPTY";
+        }
+        else {
+            private_postorder(root);
+        }
+    }
+
+    void indorder() {
+        if (root == nullptr) {
+            std::cout << "EMPTY";
+        }
+        else {
+            private_inorder(root);
+        }
+    }
 };
 
 int main() {
