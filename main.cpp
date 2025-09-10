@@ -48,6 +48,36 @@ class AVL {
     private:
     Node* root;
 
+
+
+    // insertion and deletion
+    Node* private_insertion(Node* current_node, int to_be_inserted) {
+        // base case where valid empty slot is found
+        if (current_node == nullptr) {
+            current_node = new Node(to_be_inserted);
+            return current_node;
+        }
+
+        // recursive cases where direction is chosen
+        if (to_be_inserted < current_node->element) {
+            current_node->left_branch = private_insertion(current_node->left_branch, to_be_inserted);
+        }
+        else if (to_be_inserted > current_node->element) {
+            current_node->right_branch = private_insertion(current_node->right_branch, to_be_inserted);
+        }
+        // case where to_be_inserted already exists
+        else {
+            return current_node;
+        }
+
+        // balancing for if tree is traversed before placement
+
+    };
+
+    Node* private_deletion() {
+
+    };
+
     // varying traversal methods
     void private_preorder(Node* root) {
         if (root != nullptr) {
@@ -74,6 +104,11 @@ class AVL {
     };
 
     public:
+    AVL() {
+        root = nullptr;
+    };
+
+    // public access of insertion and deletion
 
     // the public access of the traversal methods
     void preorder() {
