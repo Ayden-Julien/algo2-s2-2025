@@ -12,12 +12,41 @@
 // meand delete number; if not in tree do nothing
 //
 // input followed by (this is not included in the mod moves)
-// PRE; means output preordered tree
-// POST; means output ordered tree
-// IN; means output the input
+// PRE; 
+// POST; 
+// IN; 
+// check slides for specifics 
 
 #include <string>
 #include <iostream>
+
+// node class for the binary tree
+class Node {
+    private:
+    // base requirements to the node and tree
+    int element;
+    Node* right_branch;
+    Node* left_branch;
+
+    // for ease of tree balancing
+    int height;
+
+    // in place of a bunch of access functions
+    friend class ALV;
+
+    public:
+    Node(int elem) {
+        element = elem;
+        right_branch = nullptr;
+        left_branch = nullptr;
+        height = 1;
+    };
+};
+
+// AVL binary tree
+class AVL {
+
+};
 
 int main() {
 
