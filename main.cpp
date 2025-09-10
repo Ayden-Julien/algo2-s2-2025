@@ -1,3 +1,6 @@
+// ADSA, assignment 2
+// a1848337; Ayden Julien
+
 // start w/empty AVL tree
 // single input line of n modification moves
 // (1 <= n <= 100)
