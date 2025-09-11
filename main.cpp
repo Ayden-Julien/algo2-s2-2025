@@ -74,7 +74,8 @@ class AVL {
         right_branch->left_branch = node;
         node->right_branch = right_left_branch;
 
-
+        right_branch->height = std::max(get_height(right_branch->right_branch), get_height(right_branch->left_branch)) + 1;
+        node->height = std::max(get_height(node->right_branch), get_height(node->left_branch)) + 1;
 
         return right_branch;
     }
@@ -86,7 +87,9 @@ class AVL {
         left_branch = node;
         node->left_branch = left_right_branch;
 
-        
+        left_branch->height = std::max(get_height(left_branch->right_branch), get_height(left_branch->left_branch)) + 1;
+        node->height = std::max(get_height(node->right_branch), get_height(node->left_branch)) + 1;
+
 
         return left_branch;
     }
