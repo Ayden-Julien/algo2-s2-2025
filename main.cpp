@@ -48,22 +48,63 @@ class AVL {
     private:
     Node* root;
 
+    // base AVL operations    
+    int get_height(Node* node) {
+        if (node == nullptr) {
+            return 0;
+        }
 
+        return node->height;
+    }
+
+    int get_balance(Node* node) {
+        if (node == nullptr) {
+            return 0;
+        }
+
+        int balance = get_height(node->left_branch) - get_height(node->right_branch);
+        return balance;
+    }
+
+    // base rotations
+    Node* rotate_left(Node* node) {
+        Node* right_branch = node->right_branch;
+        Node* right_left_branch = right_branch->left_branch;
+
+        right_branch->left_branch = node;
+        node->right_branch = right_left_branch;
+
+
+
+        return right_branch;
+    }
+
+    Node* rotate_right(Node* node) {
+        Node* left_branch = node->left_branch;
+        Node* left_right_branch = left_branch->right_branch;
+
+        left_branch = node;
+        node->left_branch = left_right_branch;
+
+        
+
+        return left_branch;
+    }
 
     // insertion and deletion
-    Node* private_insertion(Node* current_node, int to_be_inserted) {
+    Node* private_insertion(Node* current_node, int num) {
         // base case where valid empty slot is found
         if (current_node == nullptr) {
-            current_node = new Node(to_be_inserted);
+            current_node = new Node(num);
             return current_node;
         }
 
         // recursive cases where direction is chosen
-        if (to_be_inserted < current_node->element) {
-            current_node->left_branch = private_insertion(current_node->left_branch, to_be_inserted);
+        if (num < current_node->element) {
+            current_node->left_branch = private_insertion(current_node->left_branch, num);
         }
-        else if (to_be_inserted > current_node->element) {
-            current_node->right_branch = private_insertion(current_node->right_branch, to_be_inserted);
+        else if (num > current_node->element) {
+            current_node->right_branch = private_insertion(current_node->right_branch, num);
         }
         // case where to_be_inserted already exists
         else {
@@ -74,8 +115,8 @@ class AVL {
 
     };
 
-    Node* private_deletion() {
-
+    Node* private_deletion(Node* current_node, int num) {
+        
     };
 
     // varying traversal methods
@@ -109,6 +150,13 @@ class AVL {
     };
 
     // public access of insertion and deletion
+    void insertion(int num) {
+        root = private_insertion(root, num);
+    };
+
+    void deletion(int num) {
+        root = private_deletion(root, num);
+    };
 
     // the public access of the traversal methods
     void preorder() {
