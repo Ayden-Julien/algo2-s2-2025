@@ -20,6 +20,8 @@
 #include <string>
 #include <iostream>
 
+using namespace std;
+
 // node class for the binary tree
 class Node {
     private:
@@ -74,9 +76,11 @@ class AVL {
         right_branch->left_branch = node;
         node->right_branch = right_left_branch;
 
-        right_branch->height = std::max(get_height(right_branch->right_branch), get_height(right_branch->left_branch)) + 1;
-        node->height = std::max(get_height(node->right_branch), get_height(node->left_branch)) + 1;
+        right_branch->height = max(get_height(right_branch->right_branch), get_height(right_branch->left_branch)) + 1;
+        node->height = max(get_height(node->right_branch), get_height(node->left_branch)) + 1;
 
+        // returning right_branch acts equivalent to changing the 
+        // pointer in the above (if existing) node
         return right_branch;
     }
 
@@ -87,9 +91,8 @@ class AVL {
         left_branch = node;
         node->left_branch = left_right_branch;
 
-        left_branch->height = std::max(get_height(left_branch->right_branch), get_height(left_branch->left_branch)) + 1;
-        node->height = std::max(get_height(node->right_branch), get_height(node->left_branch)) + 1;
-
+        left_branch->height = max(get_height(left_branch->right_branch), get_height(left_branch->left_branch)) + 1;
+        node->height = max(get_height(node->right_branch), get_height(node->left_branch)) + 1;
 
         return left_branch;
     }
@@ -125,7 +128,7 @@ class AVL {
     // varying traversal methods
     void private_preorder(Node* root) {
         if (root != nullptr) {
-            std::cout << root->element << " ";
+            cout << root->element << " ";
             private_preorder(root->left_branch);
             private_preorder(root->right_branch);
         }
@@ -135,14 +138,14 @@ class AVL {
         if (root != nullptr) {
             private_postorder(root->left_branch);
             private_postorder(root->right_branch);
-            std::cout << root->element << " ";
+            cout << root->element << " ";
         }
     };
 
     void private_inorder(Node* root) {
         if (root != nullptr) {
             private_inorder(root->left_branch);
-            std::cout << root->element << " ";
+            cout << root->element << " ";
             private_inorder(root->right_branch);
         }
     };
@@ -164,7 +167,7 @@ class AVL {
     // the public access of the traversal methods
     void preorder() {
         if (root == nullptr) {
-            std::cout << "EMPTY";
+            cout << "EMPTY";
         }
         else {
             private_preorder(root);
@@ -173,7 +176,7 @@ class AVL {
 
     void postorder() {
         if (root == nullptr) {
-            std::cout << "EMPTY";
+            cout << "EMPTY";
         }
         else {
             private_postorder(root);
@@ -182,7 +185,7 @@ class AVL {
 
     void indorder() {
         if (root == nullptr) {
-            std::cout << "EMPTY";
+            cout << "EMPTY";
         }
         else {
             private_inorder(root);
