@@ -19,6 +19,7 @@
 
 #include <string>
 #include <iostream>
+#include <sstream>
 
 using namespace std;
 
@@ -34,8 +35,8 @@ class Node {
     int height;
 
     public:
-    Node(int elem) {
-        element = elem;
+    Node(int num) {
+        element = num;
         right_branch = nullptr;
         left_branch = nullptr;
         // nullptr height being 0
@@ -232,6 +233,9 @@ class AVL {
             }
         }
 
+        // to correct height values post deletion
+        current_node->height = max(get_height(current_node->left_branch), get_height(current_node->right_branch)) + 1;
+
         // if rebalancing is required once num is deleted
         int balance = get_balance(current_node);
         if (balance > 1 || balance < -1) {
@@ -312,6 +316,9 @@ class AVL {
 };
 
 int main() {
+    string input;
+    
+    
     AVL tree;
 
     return 0;
