@@ -1,6 +1,9 @@
 // ADSA, assignment 2
 // a1848337; Ayden Julien
 
+// comp command:
+// g++ -std=c++11 -o main.out -O2 -Wall main.cpp
+
 // start w/empty AVL tree
 // single input line of n modification moves
 // (1 <= n <= 100)
@@ -137,6 +140,9 @@ class AVL {
             node = rotate_left(node);
             return node;
         }
+
+        // if all else fails 
+        return node;
     }
 
     // insertion and deletion
@@ -330,12 +336,19 @@ int main() {
         all_inputs.push_back(input);
     }
 
-    for (int i = 0; i < all_inputs.size() - 1; i++) {
+    // sorting the Addition from the Deletion
+    string num_string;
+    int num;
+    for (size_t i = 0; i < (all_inputs.size() - 1); i++) {
         if (all_inputs[i][0] == 'A') {
-            tree.insertion(all_inputs[i][1] + '0');
+            num_string = all_inputs[i].substr(1);
+            num = stoi(num_string);
+            tree.insertion(num);
         }
         else if (all_inputs[i][0] == 'D') {
-            tree.deletion(all_inputs[i][1] + '0');
+            num_string = all_inputs[i].substr(1);
+            num = stoi(num_string);
+            tree.deletion(num);
         }
     }
 
