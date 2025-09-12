@@ -115,30 +115,36 @@ class AVL {
         // != nullptr cannot exist due to balancing happening 
         // upwards
 
-        // case left left sturcture bellow node
-        if (balance > 1 && node->left_branch->left_branch != nullptr) {
-            node = rotate_right(node);
-            return node;
+        // case left ___
+        if (balance > 1) {
+            // case left left sturcture bellow node
+            if (get_balance(node->left_branch) > 1) {
+                node = rotate_right(node);
+                return node;
+            }
+
+            // case left right structure bellow node
+            else if (get_balance(node->right_branch) < -1) {
+                node->left_branch = rotate_left(node->left_branch);
+                node = rotate_right(node);
+                return node;
+            }
         }
 
-        // case left right structure bellow node
-        if (balance > 1 && node->left_branch->right_branch != nullptr) {
-            node->left_branch = rotate_left(node->left_branch);
-            node = rotate_right(node);
-            return node;
-        }
+        // case right ___
+        if (balance < -1) {
+            // case right right structure bellow node
+            if (get_balance(node->right_branch) < -1) {
+                node = rotate_left(node);
+                return node;
+            }
 
-        // case right right structure bellow node
-        if (balance < -1 && node->right_branch->right_branch != nullptr) {
-            node = rotate_left(node);
-            return node;
-        }
-
-        // case right left sturture bellow node
-        if (balance < -1 && node->right_branch->left_branch != nullptr) {
-            node->right_branch = rotate_right(node->right_branch);
-            node = rotate_left(node);
-            return node;
+            // case right left sturture bellow node
+            else if (get_balance(node->left_branch) > 1) {
+                node->right_branch = rotate_right(node->right_branch);
+                node = rotate_left(node);
+                return node;
+            }
         }
 
         // if all else fails 
