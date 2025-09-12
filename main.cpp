@@ -72,6 +72,40 @@ class AVL {
         return balance;
     }
 
+    Node* balance_this(Node* node) {
+        int balance = get_balance(node);
+        // recursively balancing up from new leaf
+        // theoretiacl case where both secondary nodes 
+        // != nullptr cannot exist due to balancing happening 
+        // upwards
+
+        // case left left sturcture bellow node
+        if (balance > 1 && node->left_branch->left_branch != nullptr) {
+            node = rotate_right(node);
+            return node;
+        }
+
+        // case left right structure bellow node
+        if (balance > 1 && node->left_branch->right_branch != nullptr) {
+            node->left_branch = rotate_left(node->left_branch);
+            node = rotate_right(node);
+            return node;
+        }
+
+        // case right right structure bellow node
+        if (balance < -1 && node->right_branch->right_branch != nullptr) {
+            node = rotate_left(node);
+            return node;
+        }
+
+        // case right left sturture bellow node
+        if (balance < -1 && node->right_branch->left_branch != nullptr) {
+            node->right_branch = rotate_right(node->right_branch);
+            node = rotate_left(node);
+            return node;
+        }
+    }
+
     // base rotations
     Node* rotate_left(Node* node) {
         Node* right_branch = node->right_branch;
@@ -128,37 +162,10 @@ class AVL {
 
         // checking if insertion has unbalanced the tree
         int balance = get_balance(current_node);
-
-        // recursively balancing up from new leaf
-        // theoretiacl case where both secondary nodes 
-        // != nullptr cannot exist due to balancing happening 
-        // upwards
-
-        // case left left sturcture bellow current_node
-        if (balance > 1 && current_node->left_branch->left_branch != nullptr) {
-            current_node = rotate_right(current_node);
+        if (balance > 1 || balance < -1) {
+            current_node = balance_this(current_node);
             return current_node;
-        };
-
-        // case left right structure bellow current_node
-        if (balance > 1 && current_node->left_branch->right_branch != nullptr) {
-            current_node->left_branch = rotate_left(current_node->left_branch);
-            current_node = rotate_right(current_node);
-            return current_node;
-        };
-
-        // case right right structure bellow current_node
-        if (balance < -1 && current_node->right_branch->right_branch != nullptr) {
-            current_node = rotate_left(current_node);
-            return current_node;
-        };
-
-        // case right left sturture bellow current_node
-        if (balance < -1 && current_node->right_branch->left_branch != nullptr) {
-            current_node->right_branch = rotate_right(current_node->right_branch);
-            current_node = rotate_left(current_node);
-            return current_node;
-        };
+        }
 
         // case if insetion doesnt excede a balance of
         // [-1, 1]
@@ -166,7 +173,66 @@ class AVL {
     };
 
     Node* private_deletion(Node* current_node, int num) {
+        // base case of DNE
+        if (current_node == nullptr) {
+            return current_node;
+        }
+
+        // downwards navigation of binary tree
+        if (num < current_node->element) {
+            current_node->left_branch = private_deletion(current_node->left_branch, num);
+        }
+        else if (num > current_node->element) {
+            current_node->right_branch = private_deletion(current_node->right_branch, num);
+        }
         
+        // num found
+        // actual deletion
+        else if (current_node->element == num) {
+            // if node containing num has less that 2 children
+            if (current_node->left_branch == nullptr || current_node->right_branch == nullptr) {
+                // if node containing num has 0 children
+                if (current_node->left_branch == nullptr && current_node->right_branch == nullptr) {
+                    delete current_node;
+                    return nullptr;
+                }
+
+                // if node containing num has 1 child
+                // left branch
+                if (current_node->left_branch != nullptr) {
+                    Node* to_be_returned = current_node->left_branch;
+                    delete current_node;
+                    return to_be_returned;
+                }
+                // right branch
+                if (current_node->right_branch != nullptr) {
+                    Node* to_be_returned = current_node->right_branch;
+                    delete current_node;
+                    return to_be_returned;
+                }
+            }
+
+            // if node has 2 children
+            if (current_node->left_branch != nullptr && current_node->right_branch != nullptr) {
+                // going down to rightmost subbranch of the left subbranch
+                Node* rightmost_left = current_node->left_branch;
+                while (rightmost_left->right_branch != nullptr) {
+                    rightmost_left = rightmost_left->right_branch;
+                }
+
+                
+            }
+        }
+
+        // if rebalancing is required once num is deleted
+        int balance = get_balance(current_node);
+        if (balance > 1 || balance < -1) {
+            current_node = balance_this(current_node);
+            return current_node;
+        }
+
+        // no rebalancing needed, backtracking to start
+        return current_node;
     };
 
     // varying traversal methods
