@@ -233,10 +233,10 @@ class AVL {
                 // branch, then deleting the rightmost_left, this will not recursively
                 // call this section (if node has 2 children) 
                 int holder = rightmost_left->element;
-                current_node = private_deletion(current_node, rightmost_left->element);
                 current_node->element = holder;
-                
-                return current_node;
+                current_node->left_branch = private_deletion(current_node->left_branch, rightmost_left->element);
+
+                // open ended so that it will run through the balance for the main "to be deleted"
             }
         }
 
@@ -373,3 +373,4 @@ int main() {
 
     return 0;
 }
+
