@@ -61,8 +61,8 @@ class AVL {
         return node->height;
     }
 
-    // + if leftside > rightside
-    // - if rightside > leftside
+    // pos if leftside > rightside
+    // neg if rightside > leftside
     int get_balance(Node* node) {
         if (node == nullptr) {
             return 0;
@@ -72,6 +72,37 @@ class AVL {
         return balance;
     }
 
+    // base rotations
+    Node* rotate_left(Node* node) {
+        Node* right_branch = node->right_branch;
+        Node* right_left_branch = right_branch->left_branch;
+
+        right_branch->left_branch = node;
+        node->right_branch = right_left_branch;
+
+        // going leaf to root to propagate height
+        node->height = max(get_height(node->right_branch), get_height(node->left_branch)) + 1;
+        right_branch->height = max(get_height(right_branch->right_branch), get_height(right_branch->left_branch)) + 1;
+
+        // returning right_branch acts equivalent to changing the 
+        // pointer in the above (if existing) node
+        return right_branch;
+    }
+
+    Node* rotate_right(Node* node) {
+        Node* left_branch = node->left_branch;
+        Node* left_right_branch = left_branch->right_branch;
+
+        left_branch->right_branch = node;
+        node->left_branch = left_right_branch;
+
+        node->height = max(get_height(node->right_branch), get_height(node->left_branch)) + 1;
+        left_branch->height = max(get_height(left_branch->right_branch), get_height(left_branch->left_branch)) + 1;
+        
+        return left_branch;
+    }
+
+    // helper for balancing a tree
     Node* balance_this(Node* node) {
         int balance = get_balance(node);
         // recursively balancing up from new leaf
@@ -104,36 +135,6 @@ class AVL {
             node = rotate_left(node);
             return node;
         }
-    }
-
-    // base rotations
-    Node* rotate_left(Node* node) {
-        Node* right_branch = node->right_branch;
-        Node* right_left_branch = right_branch->left_branch;
-
-        right_branch->left_branch = node;
-        node->right_branch = right_left_branch;
-
-        // going leaf to root to propagate height
-        node->height = max(get_height(node->right_branch), get_height(node->left_branch)) + 1;
-        right_branch->height = max(get_height(right_branch->right_branch), get_height(right_branch->left_branch)) + 1;
-
-        // returning right_branch acts equivalent to changing the 
-        // pointer in the above (if existing) node
-        return right_branch;
-    }
-
-    Node* rotate_right(Node* node) {
-        Node* left_branch = node->left_branch;
-        Node* left_right_branch = left_branch->right_branch;
-
-        left_branch->right_branch = node;
-        node->left_branch = left_right_branch;
-
-        node->height = max(get_height(node->right_branch), get_height(node->left_branch)) + 1;
-        left_branch->height = max(get_height(left_branch->right_branch), get_height(left_branch->left_branch)) + 1;
-        
-        return left_branch;
     }
 
     // insertion and deletion
@@ -220,7 +221,14 @@ class AVL {
                     rightmost_left = rightmost_left->right_branch;
                 }
 
+                // replacing the "to be deleted" with the rightmost of the left
+                // branch, then deleting the rightmost_left, this will not recursively
+                // call this section (if node has 2 children) 
+                int holder = rightmost_left->element;
+                current_node = private_deletion(current_node, rightmost_left->element);
+                current_node->element = holder;
                 
+                return current_node;
             }
         }
 
