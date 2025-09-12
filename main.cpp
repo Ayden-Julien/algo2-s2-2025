@@ -38,6 +38,7 @@ class Node {
         element = elem;
         right_branch = nullptr;
         left_branch = nullptr;
+        // nullptr height being 0
         height = 1;
     };
 
@@ -50,7 +51,8 @@ class AVL {
     private:
     Node* root;
 
-    // base AVL operations    
+    // base AVL operations
+    // mostly to compensate for the nullptr case  
     int get_height(Node* node) {
         if (node == nullptr) {
             return 0;
@@ -59,6 +61,8 @@ class AVL {
         return node->height;
     }
 
+    // + if leftside > rightside
+    // - if rightside > leftside
     int get_balance(Node* node) {
         if (node == nullptr) {
             return 0;
@@ -76,8 +80,9 @@ class AVL {
         right_branch->left_branch = node;
         node->right_branch = right_left_branch;
 
-        right_branch->height = max(get_height(right_branch->right_branch), get_height(right_branch->left_branch)) + 1;
+        // going leaf to root to propagate height
         node->height = max(get_height(node->right_branch), get_height(node->left_branch)) + 1;
+        right_branch->height = max(get_height(right_branch->right_branch), get_height(right_branch->left_branch)) + 1;
 
         // returning right_branch acts equivalent to changing the 
         // pointer in the above (if existing) node
@@ -88,12 +93,12 @@ class AVL {
         Node* left_branch = node->left_branch;
         Node* left_right_branch = left_branch->right_branch;
 
-        left_branch = node;
+        left_branch->right_branch = node;
         node->left_branch = left_right_branch;
 
-        left_branch->height = max(get_height(left_branch->right_branch), get_height(left_branch->left_branch)) + 1;
         node->height = max(get_height(node->right_branch), get_height(node->left_branch)) + 1;
-
+        left_branch->height = max(get_height(left_branch->right_branch), get_height(left_branch->left_branch)) + 1;
+        
         return left_branch;
     }
 
@@ -117,8 +122,47 @@ class AVL {
             return current_node;
         }
 
-        // balancing for if tree is traversed before placement
+        // num has been inserted increasing height of all traveled nodes
+        // if appropriate
+        current_node->height = max(get_height(current_node->left_branch), get_height(current_node->right_branch)) + 1;
 
+        // checking if insertion has unbalanced the tree
+        int balance = get_balance(current_node);
+
+        // recursively balancing up from new leaf
+        // theoretiacl case where both secondary nodes 
+        // != nullptr cannot exist due to balancing happening 
+        // upwards
+
+        // case left left sturcture bellow current_node
+        if (balance > 1 && current_node->left_branch->left_branch != nullptr) {
+            current_node = rotate_right(current_node);
+            return current_node;
+        };
+
+        // case left right structure bellow current_node
+        if (balance > 1 && current_node->left_branch->right_branch != nullptr) {
+            current_node->left_branch = rotate_left(current_node->left_branch);
+            current_node = rotate_right(current_node);
+            return current_node;
+        };
+
+        // case right right structure bellow current_node
+        if (balance < -1 && current_node->right_branch->right_branch != nullptr) {
+            current_node = rotate_left(current_node);
+            return current_node;
+        };
+
+        // case right left sturture bellow current_node
+        if (balance < -1 && current_node->right_branch->left_branch != nullptr) {
+            current_node->right_branch = rotate_right(current_node->right_branch);
+            current_node = rotate_left(current_node);
+            return current_node;
+        };
+
+        // case if insetion doesnt excede a balance of
+        // [-1, 1]
+        return current_node;
     };
 
     Node* private_deletion(Node* current_node, int num) {
