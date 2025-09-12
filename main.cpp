@@ -20,6 +20,7 @@
 #include <string>
 #include <iostream>
 #include <sstream>
+#include <vector>
 
 using namespace std;
 
@@ -315,11 +316,47 @@ class AVL {
     }
 };
 
-int main() {
-    string input;
-    
-    
+int main() {   
+    // planting tree
     AVL tree;
+
+    // input
+    string raw_input;
+    getline(cin, raw_input);
+    stringstream ss(raw_input);
+    string input;
+    vector<string> all_inputs;
+    while (ss >> input) {
+        all_inputs.push_back(input);
+    }
+
+    for (int i = 0; i < all_inputs.size() - 1; i++) {
+        if (all_inputs[i][0] == 'A') {
+            tree.insertion(all_inputs[i][1] + '0');
+        }
+        else if (all_inputs[i][0] == 'D') {
+            tree.deletion(all_inputs[i][1] + '0');
+        }
+    }
+
+    // output
+    // preorder
+    if (all_inputs.back() == "PRE") {
+        tree.preorder();
+        cout << endl;
+    }
+
+    // postorder
+    if (all_inputs.back() == "POST") {
+        tree.postorder();
+        cout << endl;
+    }
+
+    // inorder
+    if (all_inputs.back() == "IN") {
+        tree.indorder();
+        cout << endl;
+    }
 
     return 0;
 }
