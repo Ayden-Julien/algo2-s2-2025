@@ -141,7 +141,9 @@ class AVL {
             if (node->right_branch->left_branch != nullptr) {
                 // get_balance bound irrelavent as acting as a proper
                 // height comparison here
-                if (get_balance(node->right_branch) < 0) {
+                // if the imbalance is to the right right branch, we 
+                // only want to rotate_left
+                if (get_balance(node->right_branch) <= 0) {
                     node = rotate_left(node);
                     return node;
                 }
@@ -364,7 +366,7 @@ int main() {
         }
         else if (all_inputs[i][0] == 'D') {
             num_string = all_inputs[i].substr(1);
-            num = stoi(num_string);
+            num = stoi(num_string);            
             tree.deletion(num);
         }
     }
