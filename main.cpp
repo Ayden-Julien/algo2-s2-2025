@@ -52,16 +52,29 @@ class h_table {
     };
 
     // functions
-    h_slot search(std::string inp_key) {
+    int hash(std::string inp) {
+        // - 'a' to allign char to int range 0 - 25
+        int hashed = inp.back() - 'a';
+        return hashed;
+    }
+
+    int find(std::string inp_key) {
+        int inp_hash = hash(inp_key);
+        if (table[inp_hash]->status == "occupied") {
+            return 
+        }
+        else if (table[inp_hash]->status != "occupied") {
+            return -1;
+        }
+    };
+
+    void insertion(std::string inp) {
 
     };
 
-    void insertion() {
-
-    };
-
-    void deletion() {
-
+    void deletion(std::string inp) {
+        int slot_status = find(inp);
+        
     };
 
 };
