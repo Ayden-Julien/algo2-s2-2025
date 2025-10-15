@@ -14,27 +14,55 @@
 #include <vector>
 #include <string>
 
-class slot {
+class h_slot {
     private:
     std::string key;
     std::string status;
 
     public:
-    slot() {
+    h_slot() {
         key = "";
         status = "never used";
     };
-
-    friend class table;
+    friend class h_table;
 
 };
 
-class table {
+class h_table {
     private:
-
+    h_slot** table;
+    // for the 26 letters
+    int num_keys = 26;
 
     public:
-    
+    // creation deletion
+    h_table() {
+        table = new h_slot*[num_keys];
+        // setting each of the letter slots to be blank
+        for (int i = 0; i < num_keys; i++) {
+            table[i] = new h_slot();
+        }
+    };
+
+    ~h_table() {
+        for (int i = 0; i < num_keys; i++) {
+            delete table[i];
+        }
+        delete[] table;
+    };
+
+    // functions
+    h_slot search(std::string inp_key) {
+
+    };
+
+    void insertion() {
+
+    };
+
+    void deletion() {
+
+    };
 
 };
 
@@ -43,3 +71,4 @@ int main() {
 
     return 0;
 }
+
