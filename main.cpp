@@ -37,6 +37,7 @@ class h_table {
     int num_keys = 26;
 
     // valid changed states
+    std::string n_us = "never used";
     std::string occu = "occupied";
     std::string tomb = "tombstone";
 
@@ -66,41 +67,65 @@ class h_table {
 
     int find(std::string inp_key) {
         int inp_hash = hash(inp_key);
-        if (table[inp_hash]->status == occu) {
-            return -1;
+        int test_hash = inp_hash;
+        int not_found = -1;        
+
+        while (table[test_hash]->key != inp_key) {
+            // never used means that it this hash couldn't be
+            // past this test_hash
+            if (table[test_hash]->status == n_us) {
+                break;
+            }
+            // if table[test_hash] is occupied and is correct
+            if ((table[test_hash]->key == inp_key) && (table[test_hash]->status == occu)) {
+                return test_hash;
+            }
+
+            // management of itteration through table
+            test_hash = (test_hash++) % num_keys;
+            // if a full loop has been made, break
+            if (test_hash == inp_hash) {
+                break;
+            }
         }
-        else if (table[inp_hash]->status != occu) {
-            return inp_hash;
-        }
+        // for cases of itterated whole loop and not found or 
+        // found a never used slot
+        return not_found;
     };
 
     void insertion(std::string inp_key) {
         int found_hash = find(inp_key);
-        if (found_hash == -1) {
+        
+        // already exists; do nothing
+        if (found_hash != -1) {
             return;
         }
-        else {
-            table[found_hash]->status = occu;
-            table[found_hash]->key = inp_key;
-        }
+
+        if 
     };
 
-    void deletion(std::string inp) {
-        int found_hash = find(inp);
-        // slot is already empty
-        if (found_hash == -1) {
-            return;
-        }
-        // slot needs to be emptied
-        else {
-            table[found_hash]->status = tomb;
-            return;
-        }
+    void deletion(std::string inp_key) {
+        
     };
 
 };
 
 int main() {
+    // creating table
+    h_table HashTable;
+
+    // input
+    std::string raw_input;
+    getline(std::cin, raw_input);
+    std::stringstream ss(raw_input);
+    std::string input;
+    std::vector<std::string> inputs;
+    while (ss >> input) {
+        inputs.push_back(input);
+    }
+
+    // alocating based off intructions
+    
     
 
     return 0;
