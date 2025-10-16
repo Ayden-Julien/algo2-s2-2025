@@ -34,6 +34,10 @@ class h_table {
     // for the 26 letters
     int num_keys = 26;
 
+    // valid changed states
+    std::string occu = "occupied";
+    std::string tomb = "tombstone";
+
     public:
     // creation deletion
     h_table() {
@@ -52,36 +56,42 @@ class h_table {
     };
 
     // functions
-    int hash(std::string inp) {
+    int hash(std::string inp_key) {
         // - 'a' to allign char to int range 0 - 25
-        int hashed = inp.back() - 'a';
+        int hashed = inp_key.back() - 'a';
         return hashed;
     }
 
     int find(std::string inp_key) {
         int inp_hash = hash(inp_key);
-        if (table[inp_hash]->status == "occupied") {
+        if (table[inp_hash]->status == occu) {
             return -1;
         }
-        else if (table[inp_hash]->status != "occupied") {
+        else if (table[inp_hash]->status != occu) {
             return inp_hash;
         }
     };
 
-    void insertion(std::string inp) {
-        int slot = hash(inp);
-        
+    void insertion(std::string inp_key) {
+        int found_hash = find(inp_key);
+        if (found_hash == -1) {
+            return;
+        }
+        else {
+            table[found_hash]->status = occu;
+            table[found_hash]->key = inp_key;
+        }
     };
 
     void deletion(std::string inp) {
-        int slot = find(inp);
+        int found_hash = find(inp);
         // slot is already empty
-        if (slot == -1) {
+        if (found_hash == -1) {
             return;
         }
         // slot needs to be emptied
         else {
-            table[slot]->status = "tombstone";
+            table[found_hash]->status = tomb;
             return;
         }
     };
