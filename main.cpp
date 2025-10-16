@@ -13,6 +13,8 @@
 
 #include <vector>
 #include <string>
+#include <iostream>
+#include <sstream>
 
 class h_slot {
     private:
@@ -99,7 +101,7 @@ class h_table {
 };
 
 int main() {
-
+    
 
     return 0;
 }
