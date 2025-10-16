@@ -104,23 +104,18 @@ class h_table {
         int true_hash = hash(inp_key);
         int test_hash = true_hash;
 
-        while (table[test_hash]->key != inp_key) {
-            // valid slot found
-            if (table[test_hash]->status != occu) {
-                table[test_hash]->status = occu;
-                table[test_hash]->key = inp_key;
-                return;
-            }
-
-            // itteration and catching of weirdness to prevent inf loop
+        while (table[test_hash]->status == occu) {
             test_hash = (test_hash++) % num_keys;
-            // should never trigger
+            // no free space case; should not trigger
             if (test_hash == true_hash) {
-                std::cout << "INSERTION ERROR" << std::endl;
                 return;
             }
         }
-        // should never trigger
+        
+        // filling slot
+        table[test_hash]->status = occu;
+        table[test_hash]->key = inp_key;
+        
         return;
     };
 
