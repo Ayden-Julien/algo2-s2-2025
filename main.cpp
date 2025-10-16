@@ -120,7 +120,18 @@ class h_table {
     };
 
     void deletion(std::string inp_key) {
+        int found_hash = find(inp_key);
+
+        // DNE; do nothing
+        if (found_hash == -1) {
+            return;
+        }
+
+        // exists; delete
+        table[found_hash]->key = "";
+        table[found_hash]->status = tomb;
         
+        return;
     };
 
 };
