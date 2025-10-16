@@ -61,20 +61,29 @@ class h_table {
     int find(std::string inp_key) {
         int inp_hash = hash(inp_key);
         if (table[inp_hash]->status == "occupied") {
-            return 
+            return -1;
         }
         else if (table[inp_hash]->status != "occupied") {
-            return -1;
+            return inp_hash;
         }
     };
 
     void insertion(std::string inp) {
-
+        int slot = hash(inp);
+        
     };
 
     void deletion(std::string inp) {
-        int slot_status = find(inp);
-        
+        int slot = find(inp);
+        // slot is already empty
+        if (slot == -1) {
+            return;
+        }
+        // slot needs to be emptied
+        else {
+            table[slot]->status = "tombstone";
+            return;
+        }
     };
 
 };
