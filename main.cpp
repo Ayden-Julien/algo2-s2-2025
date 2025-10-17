@@ -69,12 +69,9 @@ class h_table {
         int inp_hash = hash(inp_key);
         int test_hash = inp_hash;       
 
-        while (table[test_hash]->key != inp_key) {
-            // "never used" means that key cant be past
-            // test_hash
-            if (table[test_hash]->status == n_us) {
-                break;
-            }
+        // if "never used" is hit, then key can't be passed
+        // that hash_slot
+        while (table[test_hash]->status != n_us) {            
             // if table[test_hash] is occupied and is correct
             if ((table[test_hash]->key == inp_key) && (table[test_hash]->status == occu)) {
                 return test_hash;
@@ -84,11 +81,12 @@ class h_table {
             test_hash = (test_hash + 1) % num_keys;
             // if a full loop has been made, break
             if (test_hash == inp_hash) {
+                std::cout << "full loop trigger" << std::endl;
                 break;
             }
         }
         // for cases of itterated whole loop and not found or 
-        // found a "never used" slot; -1 being DNE code
+        // hit a "never used" slot; -1 being DNE code
         return -1;
     };
 
@@ -141,6 +139,8 @@ class h_table {
                 std::cout << table[i]->key << " ";
             }
         }
+
+        std::cout << std::endl;
         
         return;
     }
@@ -161,7 +161,7 @@ int main() {
     }
 
     // inputting and sorting
-    for (int i = 0; i < all_inputs.size(); i++) {
+    for (size_t i = 0; i < all_inputs.size(); i++) {
         std::string current_key = all_inputs[i].substr(1);
         // insertion; A
         if (all_inputs[i][0] == 'A') {
