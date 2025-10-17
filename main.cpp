@@ -42,7 +42,7 @@ class h_table {
     std::string tomb = "tombstone";
 
     public:
-    // creation deletion
+    // creation, deletion
     h_table() {
         table = new h_slot*[num_keys];
         // setting each of the letter slots to be blank
@@ -67,12 +67,11 @@ class h_table {
 
     int find(std::string inp_key) {
         int inp_hash = hash(inp_key);
-        int test_hash = inp_hash;
-        int not_found = -1;        
+        int test_hash = inp_hash;       
 
         while (table[test_hash]->key != inp_key) {
-            // never used means that it this hash couldn't be
-            // past this test_hash
+            // "never used" means that key cant be past
+            // test_hash
             if (table[test_hash]->status == n_us) {
                 break;
             }
@@ -89,8 +88,8 @@ class h_table {
             }
         }
         // for cases of itterated whole loop and not found or 
-        // found a never used slot
-        return not_found;
+        // found a "never used" slot; -1 being DNE code
+        return -1;
     };
 
     void insertion(std::string inp_key) {
@@ -134,25 +133,49 @@ class h_table {
         return;
     };
 
+    void output() {
+        // going through each slot in the table and outputting
+        // the key if the slot is occupied
+        for (int i = 0; i < num_keys; i++) {
+            if (table[i]->status == occu) {
+                std::cout << table[i]->key << " ";
+            }
+        }
+        
+        return;
+    }
 };
 
 int main() {
     // creating table
     h_table HashTable;
 
-    // input
+    // input handling
     std::string raw_input;
     getline(std::cin, raw_input);
     std::stringstream ss(raw_input);
     std::string input;
-    std::vector<std::string> inputs;
+    std::vector<std::string> all_inputs;
     while (ss >> input) {
-        inputs.push_back(input);
+        all_inputs.push_back(input);
     }
 
-    // alocating based off intructions
-    
-    
+    // inputting and sorting
+    for (int i = 0; i < all_inputs.size(); i++) {
+        std::string current_key = all_inputs[i].substr(1);
+        // insertion; A
+        if (all_inputs[i][0] == 'A') {
+            HashTable.insertion(current_key);
+        }
+
+        // deletion; D
+        if (all_inputs[i][0] == 'D') {
+            HashTable.deletion(current_key);
+        }
+    }
+
+    // outputting
+    HashTable.output();
 
     return 0;
 }
