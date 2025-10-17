@@ -81,7 +81,7 @@ class h_table {
             }
 
             // management of itteration through table
-            test_hash = (test_hash++) % num_keys;
+            test_hash = (test_hash + 1) % num_keys;
             // if a full loop has been made, break
             if (test_hash == inp_hash) {
                 break;
@@ -104,7 +104,7 @@ class h_table {
         int test_hash = true_hash;
 
         while (table[test_hash]->status == occu) {
-            test_hash = (test_hash++) % num_keys;
+            test_hash = (test_hash + 1) % num_keys;
             // no free space case; should not trigger
             if (test_hash == true_hash) {
                 return;
